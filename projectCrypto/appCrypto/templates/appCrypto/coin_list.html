@@ -17,8 +17,7 @@
         {% for coin in coins %}
         <tr>
             <td>{{ coin.name }}</td>
-            <td><img src="{{ coin.icon_url }}" alt="{{ coin.name }}" width="30" height="30"></td>
-
+            <td><img src="//assets.coincap.io/assets/icons/{{ coin.symbol }}@2x.png" alt="Icon" width="20" height="20"> {{ coin.symbol }}</td>
             <td>{{ coin.price_usd }}</td>
             <td>{{ coin.changePercent24Hr }}</td>
             <td>{{ coin.vwap24Hr }}</td>

@@ -1,0 +1,29 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>CoinCap Data</title>
+</head>
+<body>
+    <h1>CoinCap Data</h1>
+    <table border="1">
+        <tr>
+            <th>Name</th>
+            <th>Symbol</th>
+            <th>Price (USD)</th>
+            <th>Change (24Hr) (%)</th>
+            <th>VWAP (24Hr)</th>
+        </tr>
+        {% for coin in coins %}
+        <tr>
+            <td>{{ coin.name }}</td>
+            <td><img src="{{ coin.icon_url }}" alt="{{ coin.name }}" width="30" height="30"></td>
+
+            <td>{{ coin.price_usd }}</td>
+            <td>{{ coin.changePercent24Hr }}</td>
+            <td>{{ coin.vwap24Hr }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+</body>
+</html>

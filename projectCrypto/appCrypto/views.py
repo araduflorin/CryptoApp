@@ -2,11 +2,14 @@
 import requests
 from django.shortcuts import render
 
+from projectCrypto.secret_key import value_secret_key
 
 
 def coin_list(request):
+    api_key = value_secret_key
     api_url = 'https://api.coincap.io/v2/assets'
-    headers = {'Authorization': 'Bearer 514fca50-c212-41b3-8efd-1db57a2d4cda'}
+    # headers = {'Authorization': 'Bearer 514fca50-c212-41b3-8efd-1db57a2d4cda'}
+    headers = {'Authorization': api_key}
 
     # api_icons = 'https://assets.coincap.io/assets/icons/{}@2x.png'
 

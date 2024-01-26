@@ -17,10 +17,16 @@
         {% for coin in coins %}
         <tr>
             <td>{{ coin.name }}</td>
-            <td><img src="//assets.coincap.io/assets/icons/{{ coin.symbol }}@2x.png" alt="Icon" width="20" height="20"> {{ coin.symbol }}</td>
-            <td>{{ coin.price_usd }}</td>
-            <td>{{ coin.changePercent24Hr }}</td>
-            <td>{{ coin.vwap24Hr }}</td>
+            <td><img src="http://assets.coincap.io/assets/icons/{{ coin.symbol.lower }}@2x.png" alt="Icon" width="25" height="25"  style="font size:5pt;" > {{ coin.symbol }}</td>
+            <td>{{ coin.price_usd | floatformat:"2g" }}</td>
+            <td >
+                {% if coin.changePercent24Hr > '0' %}
+                    <snap style="color:green;">{{ coin.changePercent24Hr | floatformat:"2" }}% </snap>
+                {% elif coin.changePercent24Hr <= '0' %}
+                    <snap style="color:red;">{{ coin.changePercent24Hr | floatformat:"2" }}%</snap>
+                {% endif %}
+            </td>
+            <td>{{ coin.vwap24Hr | floatformat:"2g"  }}</td>
         </tr>
         {% endfor %}
     </table>

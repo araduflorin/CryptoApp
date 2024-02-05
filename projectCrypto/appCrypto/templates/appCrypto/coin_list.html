@@ -5,39 +5,57 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>CoinCap Data</title>
-     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.6.2/css/bulma.css" />
 </head>
-<body>
-    <h1>CoinCap Data</h1>
-        <div class="container text-center">
+
+
+<body style="background:rgb(236, 239, 241);">
+    <section class="hero is-info" >
+        <div class="hero-body">
+            <div class="container" >
+                <h1 class="title">
+                    CoinCap Data
+                </h1>
+            </div>
+        </div>
+    </section>
+<!--    <script>-->
+<!--        const pricesWs = new WebSocket('wss://ws.coincap.io/prices?assets=bitcoin,ethereum,monero,litecoin')-->
+
+<!--        pricesWs.onmessage = function (msg) {-->
+<!--            console.log(msg.data)-->
+<!--        }-->
+<!--    </script>-->
+        <div class="container text-center" style="margin-top:20px; ">
             <div class="row ">
 
                  <div class="col-xl-10">
 <!--                    <div class="col col-lg-2">-->
                         <table class="table table-hover" border="1">
                             <thead>
-                                <tr>
+                                <tr >
                                     <th>Name</th>
-                                    <th>Symbol</th>
-                                    <th>Price (USD)</th>
-                                    <th>Change (24Hr) (%)</th>
-                                    <th>VWAP (24Hr)</th>
+                                    <th >Symbol</th>
+                                    <th class="text-center">Price (USD)</th>
+                                    <th class="text-center">Change (24Hr) (%)</th>
+                                    <th class="text-center">VWAP (24Hr)</th>
                                 </tr>
                             </thead>
                             <tbody class="table-group-divider">
                             {% for coin in coins %}
                                 <tr>
-                                    <td>{{ coin.name }}</td>
-                                    <td><img src="http://assets.coincap.io/assets/icons/{{ coin.symbol.lower }}@2x.png" alt="Icon" width="25" height="25"  style="font size:5pt;" > {{ coin.symbol }}</td>
-                                    <td>{{ coin.price_usd | floatformat:"2g" }}</td>
-                                    <td >
+                                    <td style="width: 450px;">{{ coin.name }}</td>
+                                    <td ><img src="http://assets.coincap.io/assets/icons/{{ coin.symbol.lower }}@2x.png" alt="Icon" width="25" height="25"  style="font size:5pt;" > {{ coin.symbol }}</td>
+                                    <td class="text-center">{{ coin.price_usd | floatformat:"2g" }}</td>
+                                    <td class="text-center">
                                         {% if coin.changePercent24Hr > '0' %}
                                             <snap style="color:green;">{{ coin.changePercent24Hr | floatformat:"2" }}% </snap>
                                         {% elif coin.changePercent24Hr <= '0' %}
                                             <snap style="color:red;">{{ coin.changePercent24Hr | floatformat:"2" }}%</snap>
                                         {% endif %}
-                                    </td>
-                                    <td>{{ coin.vwap24Hr | floatformat:"2g"  }}</td>
+                                    </td >
+                                    <td class="text-center">{{ coin.vwap24Hr | floatformat:"2g"  }}</td>
                                 </tr>
                             {% endfor %}
                             </tbody>

@@ -20,13 +20,17 @@
             </div>
         </div>
     </section>
-<!--    <script>-->
-<!--        const pricesWs = new WebSocket('wss://ws.coincap.io/prices?assets=bitcoin,ethereum,monero,litecoin')-->
+    <p id="price-container">Test...</p>
+    <script>
+        const pricesWs = new WebSocket('wss://ws.coincap.io/prices?assets=bitcoin')
 
-<!--        pricesWs.onmessage = function (msg) {-->
+        pricesWs.onmessage = function (msg) {
+            const priceData = JSON.parse(msg.data);
+            const priceElement = document.getElementById('price-container');
+            priceElement.textContent = 'Bitcoin price: ' + priceData.usd; // Example usage
 <!--            console.log(msg.data)-->
-<!--        }-->
-<!--    </script>-->
+        }
+    </script>
         <div class="container text-center" style="margin-top:20px; ">
             <div class="row ">
 

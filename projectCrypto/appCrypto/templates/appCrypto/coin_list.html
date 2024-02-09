@@ -20,15 +20,24 @@
             </div>
         </div>
     </section>
-    <p id="price-container">Test...</p>
+<!--    <p id="prices-container">Test...</p>-->
     <script>
-        const pricesWs = new WebSocket('wss://ws.coincap.io/prices?assets=bitcoin')
+        const pricesWs = new WebSocket('wss://ws.coincap.io/prices?assets=ALL');
 
         pricesWs.onmessage = function (msg) {
-            const priceData = JSON.parse(msg.data);
-            const priceElement = document.getElementById('price-container');
-            priceElement.textContent = 'Bitcoin price: ' + priceData.usd; // Example usage
-<!--            console.log(msg.data)-->
+            const data = JSON.parse(msg.data);
+
+            // Update prices
+            updatePrice('BitcoinPrice', data['bitcoin']);
+            updatePrice('EthereumPrice', data['ethereum']);
+            // Update other asset prices as needed
+        };
+
+        function updatePrice(assetId, price) {
+            const priceCell = document.getElementById(assetId);
+            if (priceCell) {
+                priceCell.textContent = price;
+            }
         }
     </script>
         <div class="container text-center" style="margin-top:20px; ">
@@ -46,23 +55,37 @@
                                     <th class="text-center">VWAP (24Hr)</th>
                                 </tr>
                             </thead>
-                            <tbody class="table-group-divider">
-                            {% for coin in coins %}
-                                <tr>
-                                    <td style="width: 450px;">{{ coin.name }}</td>
-                                    <td ><img src="http://assets.coincap.io/assets/icons/{{ coin.symbol.lower }}@2x.png" alt="Icon" width="25" height="25"  style="font size:5pt;" > {{ coin.symbol }}</td>
-                                    <td class="text-center">{{ coin.price_usd | floatformat:"2g" }}</td>
-                                    <td class="text-center">
-                                        {% if coin.changePercent24Hr > '0' %}
-                                            <snap style="color:green;">{{ coin.changePercent24Hr | floatformat:"2" }}% </snap>
-                                        {% elif coin.changePercent24Hr <= '0' %}
-                                            <snap style="color:red;">{{ coin.changePercent24Hr | floatformat:"2" }}%</snap>
-                                        {% endif %}
-                                    </td >
-                                    <td class="text-center">{{ coin.vwap24Hr | floatformat:"2g"  }}</td>
-                                </tr>
-                            {% endfor %}
-                            </tbody>
+<!--                            <tbody class="table-group-divider" >-->
+<!--                            {% for coin in coins %}-->
+<!--                                <tr>-->
+<!--                                    <td style="width: 450px;">{{ coin.name }}</td>-->
+<!--                                    <td ><img src="http://assets.coincap.io/assets/icons/{{ coin.symbol.lower }}@2x.png" alt="Icon" width="25" height="25"  style="font size:5pt;" > {{ coin.symbol }}</td>-->
+<!--&lt;!&ndash;                                    <td class="text-center">{{ coin.price_usd | floatformat:"2g" }}</td>&ndash;&gt;-->
+<!--                                    <td class="text-center" > </td>-->
+
+<!--                                    <td class="text-center">-->
+<!--                                        {% if coin.changePercent24Hr > '0' %}-->
+<!--                                            <snap style="color:green;">{{ coin.changePercent24Hr | floatformat:"2" }}% </snap>-->
+<!--                                        {% elif coin.changePercent24Hr <= '0' %}-->
+<!--                                            <snap style="color:red;">{{ coin.changePercent24Hr | floatformat:"2" }}%</snap>-->
+<!--                                        {% endif %}-->
+<!--                                    </td >-->
+<!--                                    <td class="text-center">{{ coin.vwap24Hr | floatformat:"2g"  }}</td>-->
+<!--                                </tr>-->
+
+<!--                            {% endfor %}-->
+<!--                            </tbody>-->
+
+                                <tbody class="table-group-divider" >
+                                    <tr>
+                                        <td>Bitcoin</td>
+                                        <td id="BitcoinPrice"></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Ethereum</td>
+                                        <td id="EthereumPrice"></td>
+                                    </tr>
+                                </tbody>
                         </table>
 <!--                    </div>-->
                 </div>

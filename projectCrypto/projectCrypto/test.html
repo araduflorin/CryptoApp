@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WebSocket Data to HTML Table</title>
+</head>
+<body>
+    <!-- Your HTML table structure -->
+    <table>
+        <tr>
+            <td class="text-center" id="pricesTableBody"></td>
+        </tr>
+    </table>
+
+    <script>
+        const pricesWs = new WebSocket('wss://ws.coincap.io/prices?assets=ALL');
+
+        pricesWs.onmessage = function (msg) {
+            const data = JSON.parse(msg.data);
+
+            // Update prices
+            for (const assetId in data) {
+                if (data.hasOwnProperty(assetId)) {
+                    updatePrice(assetId, data[assetId]);
+                }
+            }
+        };
+
+        function updatePrice(assetId, price) {
+            const priceCell = document.getElementById('pricesTableBody');
+            if (typeof price !== 'undefined') {
+                // Create new <div> element for the asset and price
+                const newDiv = document.createElement('div');
+                newDiv.textContent = assetId + ': ' + price;
+
+                // Append the new <div> to the priceCell
+                priceCell.appendChild(newDiv);
+            }
+        }
+    </script>
+</body>
+</html>

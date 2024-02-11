@@ -23,20 +23,41 @@
 <!--    <p id="prices-container">Test...</p>-->
     <script>
         const pricesWs = new WebSocket('wss://ws.coincap.io/prices?assets=ALL');
+        const priceTableBody = document.getElementById('price-table-body');
 
         pricesWs.onmessage = function (msg) {
             const data = JSON.parse(msg.data);
+            console.log('Received data:', data);
 
+            for (const assetId in data) {
+                if (data.hasOwnProperty(assetId)) {
+                    const priceCell = priceTableBody.querySelector(`tr[data-coin-id="${assetId}"] #price-${assetId}`);
+                    if (priceCell) {
+                        priceCell.textContent = data[assetId];
+                    }
+                }
+            }
             // Update prices
-            updatePrice('BitcoinPrice', data['bitcoin']);
-            updatePrice('EthereumPrice', data['ethereum']);
+         //updatePrice('BitcoinPrice', data);
+            //updatePrice('EthereumPrice', data['ethereum']);
             // Update other asset prices as needed
+
+        //for (const assetId in data) {
+          //  if (data.hasOwnProperty(assetId)) {
+            //    updatePrice(assetId, data[assetId]);
+            //}
+        //}
         };
 
         function updatePrice(assetId, price) {
-            const priceCell = document.getElementById(assetId);
-            if (priceCell) {
-                priceCell.textContent = price;
+            const priceCell = document.getElementById('BitcoinPrice');
+            if (typeof price !== 'undefined') {
+                // Create new text node with the updated price
+                const newText = document.createTextNode(price);
+
+                // Clear existing content and append the new text node
+                priceCell.textContent = "";
+                priceCell.appendChild(newText);
             }
         }
     </script>
@@ -55,38 +76,49 @@
                                     <th class="text-center">VWAP (24Hr)</th>
                                 </tr>
                             </thead>
-<!--                            <tbody class="table-group-divider" >-->
-<!--                            {% for coin in coins %}-->
+                            <tbody id="price-table-body">
+                            {% for coin in coins %}
+                                <tr data-coin-id="{{ coin.id }}">
+                                    <td style="width: 450px;">{{ coin.name }}</td>
+
+                                    <td class="coin-symbol"><img src="http://assets.coincap.io/assets/icons/{{ coin.symbol.lower }}@2x.png" alt="Icon" width="25" height="25"  style="font size:5pt;" > {{ coin.symbol }}</td>
+<!--                                    <td class="text-center">{{ coin.price_usd | floatformat:"2g" }}</td>-->
+
+                                    <td class="text-center" id="price-{{ coin.id }}">{{ coin.price_usd | floatformat:"2g" }}</td>
+
+                                    <td class="text-center">
+                                        {% if coin.changePercent24Hr > '0' %}
+                                            <snap style="color:green;">{{ coin.changePercent24Hr | floatformat:"2" }}% </snap>
+                                        {% elif coin.changePercent24Hr <= '0' %}
+                                            <snap style="color:red;">{{ coin.changePercent24Hr | floatformat:"2" }}%</snap>
+                                        {% endif %}
+                                    </td >
+                                    <td class="text-center">{{ coin.vwap24Hr | floatformat:"2g"  }}</td>
+                                </tr>
+
+                            {% endfor %}
+                            </tbody>
+
+<!--                        </table>-->
+<!--                        <table id="prices-table">-->
+<!--                            <thead>-->
 <!--                                <tr>-->
-<!--                                    <td style="width: 450px;">{{ coin.name }}</td>-->
-<!--                                    <td ><img src="http://assets.coincap.io/assets/icons/{{ coin.symbol.lower }}@2x.png" alt="Icon" width="25" height="25"  style="font size:5pt;" > {{ coin.symbol }}</td>-->
-<!--&lt;!&ndash;                                    <td class="text-center">{{ coin.price_usd | floatformat:"2g" }}</td>&ndash;&gt;-->
-<!--                                    <td class="text-center" > </td>-->
-
-<!--                                    <td class="text-center">-->
-<!--                                        {% if coin.changePercent24Hr > '0' %}-->
-<!--                                            <snap style="color:green;">{{ coin.changePercent24Hr | floatformat:"2" }}% </snap>-->
-<!--                                        {% elif coin.changePercent24Hr <= '0' %}-->
-<!--                                            <snap style="color:red;">{{ coin.changePercent24Hr | floatformat:"2" }}%</snap>-->
-<!--                                        {% endif %}-->
-<!--                                    </td >-->
-<!--                                    <td class="text-center">{{ coin.vwap24Hr | floatformat:"2g"  }}</td>-->
+<!--                                    <th>Asset</th>-->
+<!--                                    <th>Price</th>-->
 <!--                                </tr>-->
-
-<!--                            {% endfor %}-->
+<!--                            </thead>-->
+<!--                            <tbody>-->
+<!--                                <tr>-->
+<!--                                    <td>Bitcoin</td>-->
+<!--                                    <td id="BitcoinPrice"></td>-->
+<!--                                </tr>-->
+<!--                                <tr>-->
+<!--                                    <td>Ethereum</td>-->
+<!--                                    <td id="EthereumPrice"></td>-->
+<!--                                </tr>-->
+<!--                                &lt;!&ndash; Add more rows for other assets if needed &ndash;&gt;-->
 <!--                            </tbody>-->
-
-                                <tbody class="table-group-divider" >
-                                    <tr>
-                                        <td>Bitcoin</td>
-                                        <td id="BitcoinPrice"></td>
-                                    </tr>
-                                    <tr>
-                                        <td>Ethereum</td>
-                                        <td id="EthereumPrice"></td>
-                                    </tr>
-                                </tbody>
-                        </table>
+<!--                        </table>-->
 <!--                    </div>-->
                 </div>
             </div>

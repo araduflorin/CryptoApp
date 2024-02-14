@@ -30,3 +30,4 @@ def coin_list(request):
         coins.append(coin)
 
     return render(request, 'appCrypto/coin_list.html', {'coins': coins})
+    # return render(request, 'appCrypto/test.html', {'coins': coins})

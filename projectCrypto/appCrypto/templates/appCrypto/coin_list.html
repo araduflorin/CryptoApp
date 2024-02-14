@@ -22,42 +22,26 @@
     </section>
 <!--    <p id="prices-container">Test...</p>-->
     <script>
-        const pricesWs = new WebSocket('wss://ws.coincap.io/prices?assets=ALL');
-        const priceTableBody = document.getElementById('price-table-body');
+        const pricesWs = new WebSocket('wss://ws.coincap.io/prices?assets=bitcoin,ethereum,monero,litecoin');
 
         pricesWs.onmessage = function (msg) {
             const data = JSON.parse(msg.data);
-            console.log('Received data:', data);
-
+            const tableBody = document.getElementById('dataBody');
+            // Update prices in the table
             for (const assetId in data) {
                 if (data.hasOwnProperty(assetId)) {
-                    const priceCell = priceTableBody.querySelector(`tr[data-coin-id="${assetId}"] #price-${assetId}`);
-                    if (priceCell) {
-                        priceCell.textContent = data[assetId];
-                    }
+                    updatePrice(assetId, data[assetId]);
                 }
             }
-            // Update prices
-         //updatePrice('BitcoinPrice', data);
-            //updatePrice('EthereumPrice', data['ethereum']);
-            // Update other asset prices as needed
-
-        //for (const assetId in data) {
-          //  if (data.hasOwnProperty(assetId)) {
-            //    updatePrice(assetId, data[assetId]);
-            //}
-        //}
         };
 
         function updatePrice(assetId, price) {
-            const priceCell = document.getElementById('BitcoinPrice');
-            if (typeof price !== 'undefined') {
-                // Create new text node with the updated price
-                const newText = document.createTextNode(price);
-
-                // Clear existing content and append the new text node
-                priceCell.textContent = "";
-                priceCell.appendChild(newText);
+            // Find the corresponding table cell and update its content
+            const priceCell = document.getElementById('price-' + assetId);
+            let row = document.getElementById(asset + "_row");
+            let priceCell = row.cells[2];
+            if (priceCell) {
+                priceCell.textContent = price;
             }
         }
     </script>
@@ -66,7 +50,7 @@
 
                  <div class="col-xl-10">
 <!--                    <div class="col col-lg-2">-->
-                        <table class="table table-hover" border="1">
+                        <table class="table table-hover" border="1" id="dataTable">
                             <thead>
                                 <tr >
                                     <th>Name</th>
@@ -76,9 +60,9 @@
                                     <th class="text-center">VWAP (24Hr)</th>
                                 </tr>
                             </thead>
-                            <tbody id="price-table-body">
+                            <tbody id="dataBody">
                             {% for coin in coins %}
-                                <tr data-coin-id="{{ coin.id }}">
+                                <tr >
                                     <td style="width: 450px;">{{ coin.name }}</td>
 
                                     <td class="coin-symbol"><img src="http://assets.coincap.io/assets/icons/{{ coin.symbol.lower }}@2x.png" alt="Icon" width="25" height="25"  style="font size:5pt;" > {{ coin.symbol }}</td>
@@ -99,7 +83,7 @@
                             {% endfor %}
                             </tbody>
 
-<!--                        </table>-->
+                        </table>
 <!--                        <table id="prices-table">-->
 <!--                            <thead>-->
 <!--                                <tr>-->

@@ -1,0 +1,60 @@
+<!-- index.html -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WebSocket Data Display</title>
+</head>
+<body>
+    <table id="dataTable">
+        <thead>
+            <tr>
+                <th>Asset</th>
+                <th>Price</th>
+            </tr>
+        </thead>
+        <tbody id="dataBody">
+            <!-- Data will be dynamically inserted here -->
+        </tbody>
+    </table>
+
+    <script>
+        const pricesWs = new WebSocket('wss://ws.coincap.io/prices?assets=ALL')
+
+        pricesWs.onmessage = function (msg) {
+            const data = JSON.parse(msg.data);
+            const tableBody = document.getElementById('dataBody');
+
+            for (const asset in data) {
+                if (data.hasOwnProperty(asset)) {
+                    updatePrice(asset, data[asset]);
+                }
+            }
+
+            function updatePrice(asset, price) {
+                // Find existing row or create new row
+                let row = document.getElementById(asset + "_row");
+                if (!row) {
+                    row = tableBody.insertRow();
+                    row.id = asset + "_row";
+                }
+
+                // Update or create cells
+                let assetCell = row.cells[0];
+                if (!assetCell) {
+                    assetCell = row.insertCell();
+                }
+                assetCell.textContent = asset;
+
+                let priceCell = row.cells[1];
+                if (!priceCell) {
+                    priceCell = row.insertCell();
+                }
+                priceCell.textContent = price;
+            }
+        }
+    </script>
+</body>
+</html>

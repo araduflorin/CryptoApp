@@ -16,6 +16,11 @@
             </tr>
         </thead>
         <tbody id="dataBody">
+            <tr>
+                <td id="_row">
+
+                </td>
+            </tr>
             <!-- Data will be dynamically inserted here -->
         </tbody>
     </table>
@@ -26,6 +31,7 @@
         pricesWs.onmessage = function (msg) {
             const data = JSON.parse(msg.data);
             const tableBody = document.getElementById('dataBody');
+            const price = document.getElementById('price');
 
             for (const asset in data) {
                 if (data.hasOwnProperty(asset)) {

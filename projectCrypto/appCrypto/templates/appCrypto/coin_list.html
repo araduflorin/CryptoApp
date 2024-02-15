@@ -26,7 +26,7 @@
 
         pricesWs.onmessage = function (msg) {
             const data = JSON.parse(msg.data);
-            const tableBody = document.getElementById('dataBody');
+
             // Update prices in the table
             for (const assetId in data) {
                 if (data.hasOwnProperty(assetId)) {
@@ -38,10 +38,23 @@
         function updatePrice(assetId, price) {
             // Find the corresponding table cell and update its content
             const priceCell = document.getElementById('price-' + assetId);
-            let row = document.getElementById(asset + "_row");
-            let priceCell = row.cells[2];
             if (priceCell) {
                 priceCell.textContent = price;
+            }
+
+            // Update change color
+            const changeCell = document.getElementById('change-' + assetId);
+            if (changeCell) {
+                const changePercent = parseFloat(priceCell.textContent) - parseFloat(changeCell.dataset.lastPrice);
+                changeCell.dataset.lastPrice = parseFloat(priceCell.textContent);
+
+                if (changePercent > 0) {
+                    changeCell.innerHTML = '<span style="color:green;">' + changePercent.toFixed(2) + '%</span>';
+                } else if (changePercent < 0) {
+                    changeCell.innerHTML = '<span style="color:red;">' + changePercent.toFixed(2) + '%</span>';
+                } else {
+                    changeCell.innerHTML = changePercent.toFixed(2) + '%';
+                }
             }
         }
     </script>

@@ -22,39 +22,38 @@
     </section>
 <!--    <p id="prices-container">Test...</p>-->
     <script>
-        const pricesWs = new WebSocket('wss://ws.coincap.io/prices?assets=bitcoin,ethereum,monero,litecoin');
+        const pricesWs = new WebSocket('wss://ws.coincap.io/prices?assets=ALL')
 
         pricesWs.onmessage = function (msg) {
             const data = JSON.parse(msg.data);
+            const tableBody = document.getElementById('dataBody');
 
-            // Update prices in the table
-            for (const assetId in data) {
-                if (data.hasOwnProperty(assetId)) {
-                    updatePrice(assetId, data[assetId]);
+            for (const asset in data) {
+                if (data.hasOwnProperty(asset)) {
+                    updatePrice(asset, data[asset]);
                 }
             }
-        };
 
-        function updatePrice(assetId, price) {
-            // Find the corresponding table cell and update its content
-            const priceCell = document.getElementById('price-' + assetId);
-            if (priceCell) {
+            function updatePrice(asset, price) {
+                // Find existing row or create new row
+                let row = document.getElementById(asset + "_row");
+                if (!row) {
+                    row = tableBody.insertRow();
+                    row.id = asset + "_row";
+                }
+
+                // Update or create cells
+                let assetCell = row.cells[0];
+                if (!assetCell) {
+                    assetCell = row.insertCell();
+                }
+                assetCell.textContent = asset;
+
+                let priceCell = row.cells[1];
+                if (!priceCell) {
+                    priceCell = row.insertCell();
+                }
                 priceCell.textContent = price;
-            }
-
-            // Update change color
-            const changeCell = document.getElementById('change-' + assetId);
-            if (changeCell) {
-                const changePercent = parseFloat(priceCell.textContent) - parseFloat(changeCell.dataset.lastPrice);
-                changeCell.dataset.lastPrice = parseFloat(priceCell.textContent);
-
-                if (changePercent > 0) {
-                    changeCell.innerHTML = '<span style="color:green;">' + changePercent.toFixed(2) + '%</span>';
-                } else if (changePercent < 0) {
-                    changeCell.innerHTML = '<span style="color:red;">' + changePercent.toFixed(2) + '%</span>';
-                } else {
-                    changeCell.innerHTML = changePercent.toFixed(2) + '%';
-                }
             }
         }
     </script>
@@ -75,7 +74,7 @@
                             </thead>
                             <tbody id="dataBody">
                             {% for coin in coins %}
-                                <tr >
+                                <tr id="{{ coin.symbol }}_row">
                                     <td style="width: 450px;">{{ coin.name }}</td>
 
                                     <td class="coin-symbol"><img src="http://assets.coincap.io/assets/icons/{{ coin.symbol.lower }}@2x.png" alt="Icon" width="25" height="25"  style="font size:5pt;" > {{ coin.symbol }}</td>

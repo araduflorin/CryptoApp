@@ -22,38 +22,39 @@
     </section>
 <!--    <p id="prices-container">Test...</p>-->
     <script>
+
         const pricesWs = new WebSocket('wss://ws.coincap.io/prices?assets=ALL')
 
         pricesWs.onmessage = function (msg) {
             const data = JSON.parse(msg.data);
-            const tableBody = document.getElementById('dataBody');
 
             for (const asset in data) {
                 if (data.hasOwnProperty(asset)) {
                     updatePrice(asset, data[asset]);
                 }
             }
+        }
 
-            function updatePrice(asset, price) {
-                // Find existing row or create new row
-                let row = document.getElementById(asset + "_row");
-                if (!row) {
-                    row = tableBody.insertRow();
-                    row.id = asset + "_row";
-                }
+        function updatePrice(asset, price) {
+            // Find the row for the asset
+            let row = document.getElementById(asset + "_row");
+            if (row) {
+                // Find the price cell in the row
+                let priceCell = row.querySelector('.price-cell');
+                if (priceCell) {
+                    // Get the current price
+                    let currentPrice = parseFloat(priceCell.textContent);
 
-                // Update or create cells
-                let assetCell = row.cells[0];
-                if (!assetCell) {
-                    assetCell = row.insertCell();
-                }
-                assetCell.textContent = asset;
+                    // Update the price in the cell
+                    priceCell.textContent = price;
 
-                let priceCell = row.cells[1];
-                if (!priceCell) {
-                    priceCell = row.insertCell();
+                    // Change the row color based on the price change
+                    if (price > currentPrice) {
+                        row.style.backgroundColor = 'green'; // Change to your preferred color for price increase
+                    } else if (price < currentPrice) {
+                        row.style.backgroundColor = 'red'; // Change to your preferred color for price decrease
+                    }
                 }
-                priceCell.textContent = price;
             }
         }
     </script>
@@ -74,13 +75,13 @@
                             </thead>
                             <tbody id="dataBody">
                             {% for coin in coins %}
-                                <tr id="{{ coin.symbol }}_row">
+                                <tr id="{{ coin.name.lower }}_row">
                                     <td style="width: 450px;">{{ coin.name }}</td>
 
                                     <td class="coin-symbol"><img src="http://assets.coincap.io/assets/icons/{{ coin.symbol.lower }}@2x.png" alt="Icon" width="25" height="25"  style="font size:5pt;" > {{ coin.symbol }}</td>
 <!--                                    <td class="text-center">{{ coin.price_usd | floatformat:"2g" }}</td>-->
 
-                                    <td class="text-center" id="price-{{ coin.id }}">{{ coin.price_usd | floatformat:"2g" }}</td>
+                                    <td class="text-center price-cell" id="price-{{ coin.id }}">{{ coin.price_usd | floatformat:"2g" }}</td>
 
                                     <td class="text-center">
                                         {% if coin.changePercent24Hr > '0' %}

@@ -6,6 +6,10 @@
     <title>CoinCap Data</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.6.2/css/bulma.css" />
+<style>
+    .price-increase { background-color: #f44336; color: #fff; }
+    .price-decrease { background-color: red; }
+</style>
 </head>
 <body style="background:rgb(236, 239, 241);">
     <section class="hero is-info">
@@ -63,8 +67,28 @@
                 // Find the price cell in the row
                 let priceCell = row.querySelector('.price-cell');
                 if (priceCell) {
+                    // Store the old price
+                    let oldPrice = parseFloat(priceCell.textContent) || 0;
+
                     // Update the price in the cell
                     priceCell.textContent = price;
+
+                    // Remove all price-related classes
+                    row.classList.remove('price-increase', 'price-decrease', 'price-range1', 'price-range2');
+
+                    // Compare the new price with the old price and add the appropriate class
+                    if (parseFloat(price) > oldPrice) {
+                        row.classList.add('price-increase');
+                    } else if (parseFloat(price) < oldPrice) {
+                        row.classList.add('price-decrease');
+                    }
+
+                    // Add classes for different price ranges
+                    if (parseFloat(price) >= 1000 && parseFloat(price) < 5000) {
+                        row.classList.add('price-range1');
+                    } else if (parseFloat(price) >= 5000) {
+                        row.classList.add('price-range2');
+                    }
                 }
             }
         }

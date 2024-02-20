@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <!DOCTYPE html>
+<html>
+<head>
+  <title>Table-Stock</title>
+
+<style>
+
+    *{
+        box-sizing: border-box;
+        margin: 0; padding: 0;
+    }
+
+    body{
+        background-color: #f7f7f7;
+        font-family: Arial, sans-serif;
+        font-size: 16px;
+    }
+
+    table{
+        border-collapse: collapse;
+        margin: 20px auto;
+        width: 40%;
+    }
+
+    th{
+        text-align: left;
+        background-color: #333;
+        color: #fff;
+        padding: 12px;
+    }
+
+    td{ padding: 12px }
+
+    .out-of-stock{ background-color: #f44336; color: #fff;}
+
+    .high-stock{ background-color: #8bc34a; color: #fff; }
+
+    .medium-stock{ background-color: #ffa726; color: #fff; }
+
+    .low-stock{ background-color: #ff7043; color: #fff; }
+</style>
+
+</head>
+<body>
+
+<table>
+
+    <thead>
+        <tr>
+           <th>Product</th>
+           <th>Stock</th>
+           <th>Price</th>
+        </tr>
+    </thead>
+        <tbody>
+            <tr class="product-row">
+               <td>Product 1</td>
+               <td class="stock">10</td>
+               <td>$10</td>
+            </tr>
+            <tr class="product-row">
+                    <td>Product 2</td>
+                    <td class="stock">5</td>
+                    <td>$20</td>
+                  </tr>
+                  <tr class="product-row">
+                    <td>Product 3</td>
+                    <td class="stock">0</td>
+                    <td>$15</td>
+                  </tr>
+                  <tr class="product-row">
+                    <td>Product 4</td>
+                    <td class="stock">20</td>
+                    <td>$15</td>
+                  </tr>
+                  <tr class="product-row">
+                    <td>Product 5</td>
+                    <td class="stock">1</td>
+                    <td>$25</td>
+                  </tr>
+                  <tr class="product-row">
+                      <td>Product 6</td>
+                      <td class="stock">7</td>
+                      <td>$37</td>
+                    </tr>
+                  <tr class="product-row">
+                    <td>Product 7</td>
+                    <td class="stock">3</td>
+                    <td>$19</td>
+                  </tr>
+                  <tr class="product-row">
+                    <td>Product 8</td>
+                    <td class="stock">3</td>
+                    <td>$12</td>
+                  </tr>
+        </tbody>
+
+</table>
+
+<script>
+
+  // Select all elements with the class "product-row"
+  const rows = document.querySelectorAll(".product-row");
+
+  // Loop through each "product-row" element
+  for(let i = 0; i < rows.length; i++){
+
+      // Get the stock value of the current product
+ const stock = rows[i].querySelector(".stock").textContent;
+
+// Add a class to the current element based on stock value
+      // Product is out of stock
+      if(stock == 0){
+          rows[i].classList.add("out-of-stock");
+        }
+
+       // Product has low stock
+      else if(stock > 0 && stock < 5){
+          rows[i].classList.add("low-stock");
+        }
+
+      // Product has medium stock
+      else if(stock >= 5 && stock < 10){
+          rows[i].classList.add("medium-stock");
+         }
+
+       // Product has high stock
+      else { rows[i].classList.add("high-stock"); }
+
+  }
+
+</script>
+
+</body>
+</html>
+</body>
+</html>

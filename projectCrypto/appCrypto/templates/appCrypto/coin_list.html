@@ -58,7 +58,10 @@
                     let currentPrice = parseFloat(priceCell.textContent);
 
                     // Update the price in the cell
-                    priceCell.textContent = price;
+
+
+                    let formattedPrice = parseFloat(price).toLocaleString('en-US');
+                    priceCell.textContent = formattedPrice;
 
                     const rows = document.querySelectorAll('.price-cell');
                     for(let i = 0; i < rows.length; i++){

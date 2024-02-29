@@ -63,19 +63,20 @@
                     let formattedPrice = parseFloat(price).toLocaleString('en-US');
                     priceCell.textContent = formattedPrice;
 
-                    const rows = document.querySelectorAll('.price-cell');
-                    for(let i = 0; i < rows.length; i++){
-                        const row = rows[i];
-                        const priceColor = row.querySelector('.price-cell').textContent;
-                        // Change the row color based on the price change
-                        if (priceColor > currentPrice) {
-                            row.style.backgroundColor = 'green'; // Change to your preferred color for price increase
-                            row.classList.add('price-increase');
-                        } else if (priceColor < currentPrice) {
-                            row.style.backgroundColor = 'red'; // Change to your preferred color for price decrease
-                            row.classList.add('price-decrease');
-                        }
-                    }
+<!--                    var table = document.getElementById("dataTable");-->
+<!--                    var rows = table.getElementsByTagName("tr");-->
+<!--                    for(var i = 0; i < rows.length; i++){-->
+<!--                        var row = rows[i];-->
+<!--                        var cells = row.getElementsByTagName("td");-->
+<!--                        // Change the row color based on the price change-->
+<!--                        if (cells[i].textContent > currentPrice) {-->
+<!--                            row.style.backgroundColor = 'green'; // Change to your preferred color for price increase-->
+<!--                            row.classList.add('price-increase');-->
+<!--                        } else if (priceColor < currentPrice) {-->
+<!--                            row.style.backgroundColor = "#f5f5f5"; // Change to your preferred color for price decrease-->
+<!--                            row.classList.add('price-decrease');-->
+<!--                        }-->
+<!--                    }-->
 
                 }
             }

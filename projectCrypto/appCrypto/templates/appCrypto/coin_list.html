@@ -100,7 +100,7 @@
                             <tbody id="dataBody">
                             {% for coin in coins %}
                                 <tr id="{{ coin.name.lower }}_row" >
-                                    <td style="width: 450px; vertical-align: middle; text-align:center;">{{ coin.rank }}</td>
+                                    <td style="width: 450px; vertical-align: middle; text-align:center; font-size:1em;">{{ coin.rank }}</td>
 
 
                                     <td colspan="2" class="coin-symbol" >
@@ -113,16 +113,16 @@
 <!--                                    <td class="text-center">{{ coin.price_usd | floatformat:"2g" }}</td>-->
 
 
-                                    <td class="text-center price-cell" id="price-{{ coin.id }}" style="vertical-align: middle">{{ coin.price_usd | floatformat:"2g" }}</td>
+                                    <td class="text-center price-cell" id="price-{{ coin.id }}" style="vertical-align: middle; font-size: 1em; line-height: 1.4285em;">{{ coin.price_usd | floatformat:"2g" }}</td>
 
-                                    <td class="text-center" style="vertical-align: middle">
+                                    <td class="text-center" style="vertical-align: middle; font-size:1em;">
                                         {% if coin.changePercent24Hr > '0' %}
                                             <snap style="color:green;">{{ coin.changePercent24Hr | floatformat:"2" }}% </snap>
                                         {% elif coin.changePercent24Hr <= '0' %}
                                             <snap style="color:red;">{{ coin.changePercent24Hr | floatformat:"2" }}%</snap>
                                         {% endif %}
                                     </td >
-                                    <td class="text-center" style="vertical-align: middle">{{ coin.vwap24Hr | floatformat:"2g"  }}</td>
+                                    <td class="text-center" style="vertical-align: middle; font-size: 1em;">{{ coin.vwap24Hr | floatformat:"2g"  }}</td>
                                 </tr>
 
                             {% endfor %}

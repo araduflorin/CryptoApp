@@ -85,13 +85,13 @@
         <div class="container text-center" style="margin-top:20px; ">
             <div class="row ">
 
-                 <div class="col-xl-10">
+                 <div class="col-xl-10" style="margin-left:auto !important; margin-right:auto !important;">
 <!--                    <div class="col col-lg-2">-->
-                        <table class="table table-hover" border="1" id="dataTable">
+                        <table class="table table-hover" border="1" id="dataTable" >
                             <thead>
                                 <tr >
-                                    <th>Name</th>
-                                    <th >Symbol</th>
+                                    <th class="text-center" style="width:10%">Rank</th>
+                                    <th colspan="2">Name</th>
                                     <th class="text-center">Price (USD)</th>
                                     <th class="text-center">Change (24Hr) (%)</th>
                                     <th class="text-center">VWAP (24Hr)</th>
@@ -99,22 +99,30 @@
                             </thead>
                             <tbody id="dataBody">
                             {% for coin in coins %}
-                                <tr id="{{ coin.name.lower }}_row">
-                                    <td style="width: 450px;">{{ coin.name }}</td>
+                                <tr id="{{ coin.name.lower }}_row" >
+                                    <td style="width: 450px; vertical-align: middle; text-align:center;">{{ coin.rank }}</td>
 
-                                    <td class="coin-symbol"><img src="http://assets.coincap.io/assets/icons/{{ coin.symbol.lower }}@2x.png" alt="Icon" width="25" height="25"  style="font size:5pt;" > {{ coin.symbol }}</td>
+
+                                    <td colspan="2" class="coin-symbol" >
+                                        <img src="http://assets.coincap.io/assets/icons/{{ coin.symbol.lower }}@2x.png" alt="Icon" width="25" height="25"  style="font size:5pt;" >
+                                        <div style="display: inline-block; vertical-align: middle;" class="ellipsis">
+                                            {{ coin.name }}
+                                            <p style="font-size: 0.8em; opacity: 0.7;">{{ coin.symbol }}</p>
+                                        </div>
+                                    </td>
 <!--                                    <td class="text-center">{{ coin.price_usd | floatformat:"2g" }}</td>-->
 
-                                    <td class="text-center price-cell" id="price-{{ coin.id }}">{{ coin.price_usd | floatformat:"2g" }}</td>
 
-                                    <td class="text-center">
+                                    <td class="text-center price-cell" id="price-{{ coin.id }}" style="vertical-align: middle">{{ coin.price_usd | floatformat:"2g" }}</td>
+
+                                    <td class="text-center" style="vertical-align: middle">
                                         {% if coin.changePercent24Hr > '0' %}
                                             <snap style="color:green;">{{ coin.changePercent24Hr | floatformat:"2" }}% </snap>
                                         {% elif coin.changePercent24Hr <= '0' %}
                                             <snap style="color:red;">{{ coin.changePercent24Hr | floatformat:"2" }}%</snap>
                                         {% endif %}
                                     </td >
-                                    <td class="text-center">{{ coin.vwap24Hr | floatformat:"2g"  }}</td>
+                                    <td class="text-center" style="vertical-align: middle">{{ coin.vwap24Hr | floatformat:"2g"  }}</td>
                                 </tr>
 
                             {% endfor %}

@@ -20,6 +20,7 @@ def coin_list(request):
     coins = []
     for coin_data in data:
         coin = {
+            'rank': coin_data['rank'],
             'name': coin_data['name'],
             'symbol': coin_data['symbol'],
             # 'icon_url': coin_data['icon'],

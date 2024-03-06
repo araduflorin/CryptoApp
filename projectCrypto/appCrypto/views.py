@@ -1,7 +1,8 @@
 # coincap_app/views.py
 import requests
+from django import template
 from django.shortcuts import render
-
+from numerize import numerize
 from projectCrypto.secret_key import value_secret_key
 
 
@@ -25,6 +26,7 @@ def coin_list(request):
             'symbol': coin_data['symbol'],
             # 'icon_url': coin_data['icon'],
             'price_usd': coin_data['priceUsd'],
+            'marketCapUsd': coin_data['marketCapUsd'],
             'changePercent24Hr': coin_data['changePercent24Hr'],
             'vwap24Hr': coin_data['vwap24Hr'],
         }
@@ -32,3 +34,6 @@ def coin_list(request):
 
     return render(request, 'appCrypto/coin_list.html', {'coins': coins})
     # return render(request, 'appCrypto/test.html', {'coins': coins})
+
+
+

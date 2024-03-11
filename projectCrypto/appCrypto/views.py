@@ -36,4 +36,12 @@ def coin_list(request):
     # return render(request, 'appCrypto/test.html', {'coins': coins})
 
 
+def bitcoin_history(request):
+    api_url = 'https://api.coincap.io/v2/assets/bitcoin/history?interval=d1'
+    response = requests.get(api_url)
+    bitcoin_data = response.json()['data']  # Extracting relevant data
+
+    # You may need to process bitcoin_data further depending on the structure of the API response
+
+    return render(request, 'test1.html', {'bitcoin_data': bitcoin_data})
 

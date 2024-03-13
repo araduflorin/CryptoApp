@@ -14,6 +14,7 @@
     <script src=
 "https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js">
 	</script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <!--	<script src=-->
 <!--"https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/js/bootstrap.min.js">-->
 <!--	</script>-->
@@ -152,9 +153,33 @@
 
                                 <tr id="hidden_row1" class="hidden_row">
                                     <td colspan=8>
-                                        Person-1 is 24 years old and
-                                        he is a computer programmer
-                                        he earns 60000 per month
+
+                                            <div style="width: 80%; margin: auto;">
+                                                <canvas id="bitcoinChart"></canvas>
+                                            </div>
+                                            <script>
+                                                const timestamps = {{ timestamps|safe }};
+                                                const prices = {{ prices|safe }};
+
+                                                const ctx = document.getElementById('bitcoinChart').getContext('2d');
+                                                new Chart(ctx, {
+                                                    type: 'line',
+                                                    data: {
+                                                        labels: timestamps,
+                                                        datasets: [{
+                                                            label: 'Bitcoin Price (USD)',
+                                                            data: prices,
+                                                            borderColor: 'blue',
+                                                            fill: false,
+                                                        }]
+                                                    },
+                                                    options: {
+                                                        responsive: true,
+                                                        maintainAspectRatio: false,
+                                                    }
+                                                });
+                                            </script>
+
                                     </td>
                                 </tr>
                             {% endfor %}

@@ -4,7 +4,8 @@ from django import template
 from django.shortcuts import render
 from numerize import numerize
 from projectCrypto.secret_key import value_secret_key
-
+import matplotlib.pyplot as plt
+from io import BytesIO
 
 def coin_list(request):
     api_key = value_secret_key
@@ -32,16 +33,26 @@ def coin_list(request):
         }
         coins.append(coin)
 
-    return render(request, 'appCrypto/coin_list.html', {'coins': coins})
+    api_url_graph = 'https://api.coincap.io/v2/assets/bitcoin/history?interval=d1'
+    response_graph = requests.get(api_url_graph)
+    bitcoin_data = response_graph.json()
+
+    timestamps = [entry['time'] for entry in bitcoin_data['data']]
+    prices = [entry['priceUsd'] for entry in bitcoin_data['data']]
+
+
+
+    # Render template with image data
+    # context = {'image': image_data}
+
+    return render(request, 'appCrypto/coin_list.html', {'coins': coins, 'timestamps': timestamps, 'prices': prices})
     # return render(request, 'appCrypto/test.html', {'coins': coins})
 
-
-def bitcoin_history(request):
-    api_url = 'https://api.coincap.io/v2/assets/bitcoin/history?interval=d1'
-    response = requests.get(api_url)
-    bitcoin_data = response.json()['data']  # Extracting relevant data
-
-    # You may need to process bitcoin_data further depending on the structure of the API response
-
-    return render(request, 'test1.html', {'bitcoin_data': bitcoin_data})
-
+# def bitcoin_history(request):
+#     api_url = 'https://api.coincap.io/v2/assets/bitcoin/history?interval=d1'
+#     response = requests.get(api_url)
+#     bitcoin_data = response.json()['data']  # Extracting relevant data
+#
+#     # You may need to process bitcoin_data further depending on the structure of the API response
+#
+#     return render(request, 'appCrypto/coin_list.html', {'bitcoin_data': bitcoin_data})
